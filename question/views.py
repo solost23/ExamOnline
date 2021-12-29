@@ -89,17 +89,18 @@ class CheckProgramApi(APIView):
     def post(self, request):
         # 获取post提交的字典数据
         json_body = request.data
-
         # 将要执行的answer写入python文件
-        with open(r'.\question\Solution.py', 'w') as f:
+        with open(r'./question/Solution.py', 'w') as f:
             if json_body['answer']:
                 f.write(json_body['answer'])
             else:
                 f.write('')
             f.flush()
+
         # 初始化subprocess
         obj = subprocess.Popen(["python"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                universal_newlines=True)
+
         try:
             obj.stdin.write(json_body['program']['test_case'])
             obj.stdin.close()
